@@ -93,7 +93,7 @@ namespace OSFramework
         }
         
         /// <summary>
-        /// 释放引用（归还引用池）
+        /// 释放引用（当前引用不再使用，归还到引用池中暂存起来，以便下次获得）
         /// </summary>
         /// <param name="reference">引用</param>
         public static void Release(IReference reference)
@@ -107,11 +107,68 @@ namespace OSFramework
             InternalCheckReferenceType(referenceType);
             GetReferenceCollection(referenceType).Release(reference);
         }
-
+        
+        /// <summary>
+        /// 向引用池中添加指定数量的引用
+        /// </summary>
+        /// <param name="count">指定数量</param>
+        /// <typeparam name="T">引用类型</typeparam>
         public static void Add<T>(int count) where T : class, IReference, new()
         {
             GetReferenceCollection(typeof(T)).Add<T>(count);
         }
+        
+        /// <summary>
+        /// 向引用池中添加指定数量的引用
+        /// </summary>
+        /// <param name="referenceType">引用类型</param>
+        /// <param name="count">指定数量</param>
+        public static void Add(Type referenceType, int count)
+        {
+            InternalCheckReferenceType(referenceType);
+            GetReferenceCollection(referenceType).Add(count);
+        }
+
+        /// <summary>
+        /// 从引用池中移除指定数量的引用
+        /// </summary>
+        /// <param name="count">指定数量</param>
+        /// <typeparam name="T">引用类型</typeparam>
+        public static void Remove<T>(int count) where T : class, IReference
+        {
+            GetReferenceCollection(typeof(T)).Remove(count);
+        }
+        
+        /// <summary>
+        /// 从引用池中移除指定数量的引用
+        /// </summary>
+        /// <param name="referenceType">引用类型</param>
+        /// <param name="count">指定数量</param>
+        public static void Remove(Type referenceType, int count)
+        {
+            InternalCheckReferenceType(referenceType);
+            GetReferenceCollection(referenceType).Remove(count);
+        }
+
+        /// <summary>
+        /// 从引用池中移除所有引用
+        /// </summary>
+        /// <typeparam name="T">引用类型</typeparam>
+        public static void RemoveAll<T>() where T : class, IReference
+        {
+            GetReferenceCollection(typeof(T)).RemoveAll();
+        }
+        
+        /// <summary>
+        /// 从引用池中移除所有引用
+        /// </summary>
+        /// <param name="referenceType">引用类型</param>
+        public static void RemoveAll(Type referenceType)
+        {
+            InternalCheckReferenceType(referenceType);
+            GetReferenceCollection(referenceType).RemoveAll();
+        }
+        
 
         /// <summary>
         /// 判断类似是否合规，where T : class, IReference, new()
@@ -137,9 +194,7 @@ namespace OSFramework
 
             if (!typeof(IReference).IsAssignableFrom(referenceType))
             {
-                throw new OSFrameworkException("Reference type is invalid.");
-                // TODO:替换为Utility方法
-                // throw new OSFrameworkException(Utility.Text.Format("Reference type '{0}' is invalid.", referenceType.FullName));
+                throw new OSFrameworkException(Utility.Text.Format("Reference type '{0}' is invalid.", referenceType.FullName));
             }
         }
 
