@@ -8,7 +8,7 @@ namespace OSFramework
     /// <summary>
     /// 引用池信息
     /// </summary>
-    public class ReferencePoolInfo
+    public struct ReferencePoolInfo
     {
         private readonly Type m_Type;
         private readonly int m_UnusedReferenceCount;
