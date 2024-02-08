@@ -210,7 +210,8 @@ namespace OSFramework
             {
                 throw new OSFrameworkException("Event handler is invalid.");
             }
-
+            
+            // 防止在HandleEvent时拿到的CacheNode没有更新
             if (m_CachedNodes.Count > 0)
             {
                 foreach (KeyValuePair<object, LinkedListNode<EventHandler<T>>> cachedNode in m_CachedNodes)
@@ -220,7 +221,7 @@ namespace OSFramework
                         m_TempNodes.Add(cachedNode.Key, cachedNode.Value.Next);
                     }
                 }
-
+                
                 if (m_TempNodes.Count > 0)
                 {
                     foreach (KeyValuePair<object, LinkedListNode<EventHandler<T>>> tempNode in m_TempNodes)
