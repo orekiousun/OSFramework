@@ -5,7 +5,7 @@ namespace OSFramework
     /// <summary>
     /// 事件池模式
     /// </summary>
-    [Flags]
+    [Flags] // 使用[Flags]标签即可以像整数一样进行按位的“|”或者按位的“&”操作了。
     internal enum EventPoolMode : byte
     {
         /// <summary>

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using UnityEngine;
 
 namespace OSFramework
 {
@@ -70,7 +68,7 @@ namespace OSFramework
         }
 
         /// <summary>
-        /// 检查多值字典中是否包含指定值
+        /// 检查多值字典指定主键中是否包含指定值
         /// </summary>
         /// <param name="key">要检查的主键</param>
         /// <param name="value">要检查的值</param>

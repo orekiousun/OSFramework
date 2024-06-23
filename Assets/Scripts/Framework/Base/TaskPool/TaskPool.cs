@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace OSFramework
 {
@@ -123,13 +122,13 @@ namespace OSFramework
                 if (!task.Done)
                 {
                     // 如果任务还未完成，就继续执行任务
-                    current.Value.Upadate(elapseSeconds, realElapseSeconds);
+                    current.Value.Update(elapseSeconds, realElapseSeconds);
                     current = current.Next;
                     continue;
                 }
                 
                 LinkedListNode<ITaskAgent<T>> next = current.Next;
-                // 结束任务代理的工作
+                // 任务已经完成，结束任务代理的工作
                 current.Value.Reset();
                 m_FreeAgents.Push(current.Value);
                 m_WorkingAgents.Remove(current);
@@ -153,10 +152,10 @@ namespace OSFramework
                 LinkedListNode<ITaskAgent<T>> agentNode = m_WorkingAgents.AddLast(agent);
                 T task = current.Value;
                 LinkedListNode<T> next = current.Next;
-                StartTaskStatus status = agent.Start(task);  // 由任务代理来开始任务，返回一个接下来的任务状态
-                // 1-任务已经完成或者任务出现错误：结束任务代理的工作，释放任务的引用，从等待列表中移除任务
-                // 2-任务须继续等待：结束任务代理的工作，但是不释放任务的引用，保持任务在等待列表中
-                // 3-任务可以继续处理：任务代理继续持有任务，从等待列表中移除任务
+                StartTaskStatus status = agent.Start(task);  // 由任务代理来开启任务，返回一个接下来的任务状态，以确定任务的下一步操作
+                // status == StartTaskStatus.Done || status == StartTaskStatus.UnknownError：均视为任务完成
+                // status == StartTaskStatus.HasToWait：不能继续处理此任务，需要等到其他任务完成--重置任务，此时任务代理为空闲，将任务保留到等待队列中
+                // status == StartTaskStatus.CanResume：可以继续处理此任务--将任务从等待队列中移除（m_WorkingAgents继续持有当前任务代理）
                 if (status == StartTaskStatus.Done || status == StartTaskStatus.HasToWait || status == StartTaskStatus.UnknownError)
                 {
                     agent.Reset();

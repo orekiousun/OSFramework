@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace OSFramework
 {
     /// <summary>
-    /// 游戏入口（感觉也可以叫ModuleManager）
+    /// 游戏入口（感觉也可以叫ModuleManager，主要处理模块的轮询，关闭和获取以及创建）
     /// </summary>
     public static class OSFrameworkEntry
     {

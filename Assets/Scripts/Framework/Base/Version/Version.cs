@@ -6,7 +6,7 @@ namespace OSFramework
 {
     public static partial class Version
     {
-        private const string OSFrameworkVersionString = "2024.2.7";
+        private const string OSFrameworkVersionString = "2024.02.07";
 
         private static IVersionHelper s_VersionHelper = null;
 

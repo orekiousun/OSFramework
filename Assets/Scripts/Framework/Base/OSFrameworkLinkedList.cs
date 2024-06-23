@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using UnityEditor;
-using UnityEngine;
 
 namespace OSFramework
 {
@@ -14,6 +12,9 @@ namespace OSFramework
     public sealed class OSFrameworkLinkedList<T> : ICollection<T>, ICollection, IEnumerable<T>, IEnumerable
     {
         private readonly LinkedList<T> m_LinkedList;
+        /// <summary>
+        /// 存放被释放了还没有使用的节点
+        /// </summary>
         private readonly Queue<LinkedListNode<T>> m_CachedNodes;
 
         /// <summary>
@@ -239,7 +240,7 @@ namespace OSFramework
         /// <summary>
         /// 清空节点缓存
         /// </summary>
-        public void ClearCacheNodes()
+        public void ClearCachedNodes()
         {
             m_CachedNodes.Clear();
         }
@@ -257,7 +258,7 @@ namespace OSFramework
         /// <summary>
         /// 从指定索引处开始将链表复制到一个数组中
         /// </summary>
-        /// <param name="array">一维数组</param>
+        /// <param name="array">一维数组，它是从链表复制的元素的目标。数组必须具有从零开始的索引</param>
         /// <param name="index">指定索引</param>
         public void CopyTo(T[] array, int index)
         {
@@ -267,7 +268,7 @@ namespace OSFramework
         /// <summary>
         /// 从指定索引处开始将链表复制到一个数组中
         /// </summary>
-        /// <param name="array">一维数组</param>
+        /// <param name="array">一维数组，它是从 ICollection 复制的元素的目标。数组必须具有从零开始的索引</param>
         /// <param name="index">指定索引</param>
         public void CopyTo(Array array, int index)
         {
@@ -337,7 +338,9 @@ namespace OSFramework
             ReleaseNode(first);
         }
 
-
+        /// <summary>
+        /// 移除链表结尾的节点
+        /// </summary>
         public void RemoveLast()
         {
             LinkedListNode<T> last = m_LinkedList.Last;

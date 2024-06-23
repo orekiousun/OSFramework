@@ -24,7 +24,7 @@
         /// </summary>
         /// <param name="elapseSeconds">逻辑轮询时间，以秒为单位</param>
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位</param>
-        void Upadate(float elapseSeconds, float realElapseSeconds);
+        void Update(float elapseSeconds, float realElapseSeconds);
 
         /// <summary>
         /// 关闭清理任务并代理
